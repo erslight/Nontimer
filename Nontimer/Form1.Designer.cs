@@ -97,6 +97,7 @@ namespace Nontimer
             this.offHourTextBox.Name = "offHourTextBox";
             this.offHourTextBox.Size = new System.Drawing.Size(42, 20);
             this.offHourTextBox.TabIndex = 4;
+            this.offHourTextBox.TextChanged += offHourTextBox_TextChanged;
             // 
             // settingsLabel
             // 
@@ -122,6 +123,7 @@ namespace Nontimer
             this.offMinuteTextBox.Name = "offMinuteTextBox";
             this.offMinuteTextBox.Size = new System.Drawing.Size(46, 20);
             this.offMinuteTextBox.TabIndex = 7;
+            this.offMinuteTextBox.TextChanged += offMinuteTextChanged;
             // 
             // radioButtonThrough
             // 
@@ -151,6 +153,7 @@ namespace Nontimer
             this.offtextBoxIn.Name = "offtextBoxIn";
             this.offtextBoxIn.Size = new System.Drawing.Size(140, 20);
             this.offtextBoxIn.TabIndex = 10;
+            this.offtextBoxIn.TextChanged += OfftextBoxIn_TextChanged;
             // 
             // offlabelIn
             // 
@@ -294,6 +297,10 @@ namespace Nontimer
 
         private void OfftextBoxIn_TextChanged(object sender, EventArgs e)
         {
+            if (!offin_regex.IsMatch(offtextBoxIn.Text))
+            {
+                offtextBoxIn.Clear();
+            }
             Cut(offtextBoxIn.Text);
         }
 
@@ -312,9 +319,11 @@ namespace Nontimer
         {
             string hours = text.Substring(text.IndexOf(':'));
             string mins = text.Substring(text.LastIndexOf(':') + 1);
-            double h; Double.TryParse(hours, out h); shutInHours = System.Convert.ToInt32(h);
-            double m; Double.TryParse(mins, out m); shutInMins = System.Convert.ToInt32(m); 
+            double h; Double.TryParse(hours, out h);  shutInHours = System.Convert.ToInt32(h);
+            double m; Double.TryParse(mins, out m); shutInMins = System.Convert.ToInt32(m);
+            double now = DateTime.Now.Hour * 3600 + DateTime.Now.Minute * 60;
             double overallTime = h * 3600 + m * 60;
+            overallInTime = overallInTime - now;
             this.overallInTime = overallTime;
         }
 
