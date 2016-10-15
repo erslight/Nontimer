@@ -46,6 +46,7 @@ namespace Nontimer
             this.offtextBoxIn = new System.Windows.Forms.TextBox();
             this.offlabelIn = new System.Windows.Forms.Label();
             this.timer3 = new System.Windows.Forms.Timer(this.components);
+            this.cancelButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // timeBox
@@ -58,14 +59,7 @@ namespace Nontimer
             // timer1
             // 
             this.timer1.Enabled = true;
-            this.timer1.Interval = 100;
             this.timer1.Tick += new System.EventHandler(this.timer1_tick);
-            // 
-            // timer3
-            // 
-            this.timer3.Enabled = true;
-            this.timer1.Interval = 100;
-            this.timer3.Tick += new System.EventHandler(this.timer3_Tick);
             // 
             // okayButton
             // 
@@ -167,7 +161,23 @@ namespace Nontimer
             this.offlabelIn.Size = new System.Drawing.Size(76, 13);
             this.offlabelIn.TabIndex = 11;
             this.offlabelIn.Text = "Выключить в:";
-            
+            // 
+            // timer3
+            // 
+            this.timer3.Enabled = true;
+            this.timer3.Tick += new System.EventHandler(this.timer3_Tick);
+            // 
+            // cancelButton
+            // 
+            this.cancelButton.Enabled = false;
+            this.cancelButton.Location = new System.Drawing.Point(217, 144);
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.TabIndex = 12;
+            this.cancelButton.Text = "Cancel";
+            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Enabled = true;
+            this.cancelButton.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // Sleep
             // 
@@ -175,6 +185,7 @@ namespace Nontimer
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(325, 179);
+            this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.offlabelIn);
             this.Controls.Add(this.offtextBoxIn);
             this.Controls.Add(this.radioButtonIn);
@@ -282,14 +293,43 @@ namespace Nontimer
             checkButton();
         }
 
-        
 
+        private void OfftextBoxIn_TextChanged(object sender, EventArgs e)
+        {
+            Cut(offtextBoxIn.Text);
+        }
+
+        /* проверка состояния кнопки ОК
+         * */
         private void checkButton()
         {
             if ((offHourTextBox.Text == string.Empty) && (offMinuteTextBox.Text == string.Empty))
             {
                 okayButton.Enabled = false;
             }
+        }
+        /*вычленение из второго текстбокса
+         * часов и минут */
+        private void Cut(string text)
+        {
+            string hours = text.Substring(text.IndexOf(':'));
+            string mins = text.Substring(text.LastIndexOf(':') + 1);
+            double h; Double.TryParse(hours, out h); shutInHours = System.Convert.ToInt32(h);
+            double m; Double.TryParse(mins, out m); shutInMins = System.Convert.ToInt32(m); 
+            double overallTime = h * 3600 + m * 60;
+            this.overallInTime = overallTime;
+        }
+
+
+        /* выключение компьютера через н секунд */
+        private void shutdown (double seconds)
+        {
+            System.Diagnostics.Process.Start("cmd", "/c shutdown -s -f -t " + seconds);
+        }
+
+        private void cancel_shutdown()
+        {
+            System.Diagnostics.Process.Start("cmd", "/c shutdown /a");
         }
 
         private System.Windows.Forms.TextBox timeBox;
@@ -301,6 +341,7 @@ namespace Nontimer
         private double shutHours;
         private double shutMinutes;
         private Regex off_regex = new Regex("\\d{1,2}");
+        private Regex offin_regex = new Regex("\\d[:]{,5}");
         private System.Windows.Forms.Label settingsLabel;
         private System.Windows.Forms.Label minuteLabel;
         private System.Windows.Forms.TextBox offMinuteTextBox;
@@ -309,9 +350,12 @@ namespace Nontimer
         private System.Windows.Forms.TextBox offtextBoxIn;
         private System.Windows.Forms.Label offlabelIn;
         private System.Windows.Forms.Timer timer3;
-        private bool offIn = false;
+        private int shutInHours;
+        private int shutInMins;
+        private double overallInTime;
         private bool chbEn = false;
-
+        private bool offIn = false;
+        private System.Windows.Forms.Button cancelButton;
     }
 
 }
