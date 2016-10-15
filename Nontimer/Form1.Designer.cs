@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace Nontimer
 {
@@ -44,10 +45,10 @@ namespace Nontimer
             this.offMinuteTextBox = new System.Windows.Forms.TextBox();
             this.radioButtonThrough = new System.Windows.Forms.RadioButton();
             this.radioButtonIn = new System.Windows.Forms.RadioButton();
-            this.offtextBoxIn = new System.Windows.Forms.TextBox();
             this.offlabelIn = new System.Windows.Forms.Label();
             this.timer3 = new System.Windows.Forms.Timer(this.components);
             this.cancelButton = new System.Windows.Forms.Button();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.SuspendLayout();
             // 
             // timeBox
@@ -147,14 +148,6 @@ namespace Nontimer
             this.radioButtonIn.Text = "В:";
             this.radioButtonIn.UseVisualStyleBackColor = true;
             // 
-            // offtextBoxIn
-            // 
-            this.offtextBoxIn.Location = new System.Drawing.Point(173, 118);
-            this.offtextBoxIn.Name = "offtextBoxIn";
-            this.offtextBoxIn.Size = new System.Drawing.Size(140, 20);
-            this.offtextBoxIn.TabIndex = 10;
-            this.offtextBoxIn.TextChanged += OfftextBoxIn_TextChanged;
-            // 
             // offlabelIn
             // 
             this.offlabelIn.AutoSize = true;
@@ -179,15 +172,27 @@ namespace Nontimer
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.button1_Click_1);
             // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.CustomFormat = "HH:mm";
+            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePicker1.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.dateTimePicker1.Location = new System.Drawing.Point(173, 118);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(136, 20);
+            this.dateTimePicker1.TabIndex = 13;
+            this.dateTimePicker1.Value = System.DateTime.Now;
+            this.dateTimePicker1.TextChanged += DateTimePicker1_TextChanged;
+            // 
             // Sleep
             // 
             this.AcceptButton = this.okayButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(325, 179);
+            this.ClientSize = new System.Drawing.Size(341, 179);
+            this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.offlabelIn);
-            this.Controls.Add(this.offtextBoxIn);
             this.Controls.Add(this.radioButtonIn);
             this.Controls.Add(this.radioButtonThrough);
             this.Controls.Add(this.offMinuteTextBox);
@@ -206,6 +211,32 @@ namespace Nontimer
             this.ResumeLayout(false);
             this.PerformLayout();
 
+        }
+
+      
+
+        private void DateTimePicker1_TextChanged(object sender, EventArgs e)
+        {
+            this.overallInTime = 0;
+            double buf = dateTimePicker1.Value.Hour * 3600 - DateTime.Now.Hour * 3600;
+            buf += dateTimePicker1.Value.Minute * 60 - DateTime.Now.Minute * 60;
+            double bufD;
+            if (DateTime.Now.DayOfYear > dateTimePicker1.Value.DayOfYear || DateTime.Now.Year > dateTimePicker1.Value.Year)
+            {
+                bufD = 0;
+                System.Windows.Forms.MessageBox.Show("Неверная дата!");                
+            }   
+            else
+            {
+                bufD = dateTimePicker1.Value.DayOfYear * 86400 - DateTime.Now.DayOfYear * 86400;
+            }
+            if (buf < 0 && dateTimePicker1.Value.DayOfYear == DateTime.Now.DayOfYear)
+            {
+                buf += 86400;
+            }
+            this.overallInTime = buf + bufD;
+            this.shutInHours = dateTimePicker1.Value.Hour;
+            this.shutInMins = dateTimePicker1.Value.Minute;
         }
 
         #endregion
@@ -244,11 +275,11 @@ namespace Nontimer
             }
             if (!this.radioButtonIn.Checked)
             {
-                this.offtextBoxIn.Enabled = false;
+                this.dateTimePicker1.Enabled = false;
             }
             else
             {
-                this.offtextBoxIn.Enabled = true;
+                this.dateTimePicker1.Enabled = true;
                 this.offIn = true;
                 this.chbEn = true;
                 this.okayButton.Enabled = true;
@@ -262,7 +293,7 @@ namespace Nontimer
         /* часовое поле
          * Проверка валидности введенных данных
          * выключение компьютера по данным
-         * */
+         * */       
         private void offHourTextBox_TextChanged(object sender, System.EventArgs e)
         {       
             double time = 24.0;
@@ -295,14 +326,7 @@ namespace Nontimer
         }
 
 
-        private void OfftextBoxIn_TextChanged(object sender, EventArgs e)
-        {
-            if (!offin_regex.IsMatch(offtextBoxIn.Text))
-            {
-                offtextBoxIn.Clear();
-            }
-            Cut(offtextBoxIn.Text);
-        }
+        
 
         /* проверка состояния кнопки ОК
          * */
@@ -317,7 +341,12 @@ namespace Nontimer
          * часов и минут */
         private void Cut(string text)
         {
-            string hours = text.Substring(text.IndexOf(':'));
+            string hours="";
+            text.Remove(5);
+            
+                 hours = text.Substring(text.IndexOf(':'));
+            
+            
             string mins = text.Substring(text.LastIndexOf(':') + 1);
             double h; Double.TryParse(hours, out h);  shutInHours = System.Convert.ToInt32(h);
             double m; Double.TryParse(mins, out m); shutInMins = System.Convert.ToInt32(m);
@@ -354,7 +383,6 @@ namespace Nontimer
         private System.Windows.Forms.TextBox offMinuteTextBox;
         private System.Windows.Forms.RadioButton radioButtonThrough;
         private System.Windows.Forms.RadioButton radioButtonIn;
-        private System.Windows.Forms.TextBox offtextBoxIn;
         private System.Windows.Forms.Label offlabelIn;
         private System.Windows.Forms.Timer timer3;
         private int shutInHours;
@@ -363,6 +391,7 @@ namespace Nontimer
         private bool chbEn = false;
         private bool offIn = false;
         private System.Windows.Forms.Button cancelButton;
+        private System.Windows.Forms.DateTimePicker dateTimePicker1;
     }
 
 }
