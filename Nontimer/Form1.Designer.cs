@@ -41,6 +41,10 @@ namespace Nontimer
             this.settingsLabel = new System.Windows.Forms.Label();
             this.minuteLabel = new System.Windows.Forms.Label();
             this.offMinuteTextBox = new System.Windows.Forms.TextBox();
+            this.radioButtonThrough = new System.Windows.Forms.RadioButton();
+            this.radioButtonIn = new System.Windows.Forms.RadioButton();
+            this.offtextBoxIn = new System.Windows.Forms.TextBox();
+            this.offlabelIn = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // timeBox
@@ -58,14 +62,13 @@ namespace Nontimer
             // okayButton
             // 
             this.okayButton.Enabled = false;
-            this.okayButton.Location = new System.Drawing.Point(96, 133);
+            this.okayButton.Location = new System.Drawing.Point(96, 144);
             this.okayButton.Name = "okayButton";
             this.okayButton.Size = new System.Drawing.Size(75, 23);
             this.okayButton.TabIndex = 1;
             this.okayButton.Text = "OK";
             this.okayButton.UseVisualStyleBackColor = true;
             this.okayButton.Click += new System.EventHandler(this.button1_Click);
-            this.okayButton.Enabled = false;
             // 
             // currentLabel
             // 
@@ -79,7 +82,7 @@ namespace Nontimer
             // offHourLabel
             // 
             this.offHourLabel.AutoSize = true;
-            this.offHourLabel.Location = new System.Drawing.Point(9, 91);
+            this.offHourLabel.Location = new System.Drawing.Point(9, 102);
             this.offHourLabel.Name = "offHourLabel";
             this.offHourLabel.Size = new System.Drawing.Size(38, 13);
             this.offHourLabel.TabIndex = 3;
@@ -87,12 +90,10 @@ namespace Nontimer
             // 
             // offHourTextBox
             // 
-            this.offHourTextBox.Location = new System.Drawing.Point(12, 107);
+            this.offHourTextBox.Location = new System.Drawing.Point(12, 118);
             this.offHourTextBox.Name = "offHourTextBox";
             this.offHourTextBox.Size = new System.Drawing.Size(42, 20);
             this.offHourTextBox.TabIndex = 4;
-            this.offHourTextBox.TextChanged += offHourTextBox_TextChanged;
-            
             // 
             // settingsLabel
             // 
@@ -106,7 +107,7 @@ namespace Nontimer
             // minuteLabel
             // 
             this.minuteLabel.AutoSize = true;
-            this.minuteLabel.Location = new System.Drawing.Point(74, 91);
+            this.minuteLabel.Location = new System.Drawing.Point(74, 102);
             this.minuteLabel.Name = "minuteLabel";
             this.minuteLabel.Size = new System.Drawing.Size(49, 13);
             this.minuteLabel.TabIndex = 6;
@@ -114,18 +115,59 @@ namespace Nontimer
             // 
             // offMinuteTextBox
             // 
-            this.offMinuteTextBox.Location = new System.Drawing.Point(77, 106);
+            this.offMinuteTextBox.Location = new System.Drawing.Point(77, 118);
             this.offMinuteTextBox.Name = "offMinuteTextBox";
             this.offMinuteTextBox.Size = new System.Drawing.Size(46, 20);
             this.offMinuteTextBox.TabIndex = 7;
-            this.offMinuteTextBox.TextChanged += offMinuteTextChanged;
+            // 
+            // radioButtonThrough
+            // 
+            this.radioButtonThrough.AutoSize = true;
+            this.radioButtonThrough.Location = new System.Drawing.Point(12, 71);
+            this.radioButtonThrough.Name = "radioButtonThrough";
+            this.radioButtonThrough.Size = new System.Drawing.Size(60, 17);
+            this.radioButtonThrough.TabIndex = 8;
+            this.radioButtonThrough.TabStop = true;
+            this.radioButtonThrough.Text = "Через:";
+            this.radioButtonThrough.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonIn
+            // 
+            this.radioButtonIn.AutoSize = true;
+            this.radioButtonIn.Location = new System.Drawing.Point(173, 71);
+            this.radioButtonIn.Name = "radioButtonIn";
+            this.radioButtonIn.Size = new System.Drawing.Size(35, 17);
+            this.radioButtonIn.TabIndex = 9;
+            this.radioButtonIn.TabStop = true;
+            this.radioButtonIn.Text = "В:";
+            this.radioButtonIn.UseVisualStyleBackColor = true;
+            // 
+            // offtextBoxIn
+            // 
+            this.offtextBoxIn.Location = new System.Drawing.Point(173, 118);
+            this.offtextBoxIn.Name = "offtextBoxIn";
+            this.offtextBoxIn.Size = new System.Drawing.Size(140, 20);
+            this.offtextBoxIn.TabIndex = 10;
+            // 
+            // offlabelIn
+            // 
+            this.offlabelIn.AutoSize = true;
+            this.offlabelIn.Location = new System.Drawing.Point(173, 102);
+            this.offlabelIn.Name = "offlabelIn";
+            this.offlabelIn.Size = new System.Drawing.Size(76, 13);
+            this.offlabelIn.TabIndex = 11;
+            this.offlabelIn.Text = "Выключить в:";
             // 
             // Sleep
             // 
             this.AcceptButton = this.okayButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(325, 159);
+            this.ClientSize = new System.Drawing.Size(325, 179);
+            this.Controls.Add(this.offlabelIn);
+            this.Controls.Add(this.offtextBoxIn);
+            this.Controls.Add(this.radioButtonIn);
+            this.Controls.Add(this.radioButtonThrough);
             this.Controls.Add(this.offMinuteTextBox);
             this.Controls.Add(this.minuteLabel);
             this.Controls.Add(this.settingsLabel);
@@ -161,6 +203,30 @@ namespace Nontimer
         private void timer1_tick(object sender, System.EventArgs e)
         {
             this.timeBox.Text = System.DateTime.Now.ToString();
+            radioCheck();
+        }
+
+        private void radioCheck()
+        {
+            if (!this.radioButtonThrough.Checked)
+            {
+                offMinuteTextBox.Enabled = false;
+                offHourTextBox.Enabled = false;
+            }
+            else
+            {
+                offMinuteTextBox.Enabled = true;
+                offHourTextBox.Enabled = true;
+            }
+            if (!this.radioButtonIn.Checked)
+            {
+                this.offtextBoxIn.Enabled = false;
+            }
+            else
+            {
+                this.offtextBoxIn.Enabled = true;                
+            }
+
         }
 
 
@@ -219,6 +285,15 @@ namespace Nontimer
                 okayButton.Enabled = false;
             }
         }
+
+        
+
+        
+        
+        private System.Windows.Forms.RadioButton radioButtonThrough;
+        private System.Windows.Forms.RadioButton radioButtonIn;
+        private System.Windows.Forms.TextBox offtextBoxIn;
+        private System.Windows.Forms.Label offlabelIn;
     }
 
 }
