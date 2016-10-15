@@ -45,6 +45,7 @@ namespace Nontimer
             this.radioButtonIn = new System.Windows.Forms.RadioButton();
             this.offtextBoxIn = new System.Windows.Forms.TextBox();
             this.offlabelIn = new System.Windows.Forms.Label();
+            this.timer3 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // timeBox
@@ -57,7 +58,14 @@ namespace Nontimer
             // timer1
             // 
             this.timer1.Enabled = true;
+            this.timer1.Interval = 100;
             this.timer1.Tick += new System.EventHandler(this.timer1_tick);
+            // 
+            // timer3
+            // 
+            this.timer3.Enabled = true;
+            this.timer1.Interval = 100;
+            this.timer3.Tick += new System.EventHandler(this.timer3_Tick);
             // 
             // okayButton
             // 
@@ -94,6 +102,7 @@ namespace Nontimer
             this.offHourTextBox.Name = "offHourTextBox";
             this.offHourTextBox.Size = new System.Drawing.Size(42, 20);
             this.offHourTextBox.TabIndex = 4;
+            this.offHourTextBox.TextChanged += offHourTextBox_TextChanged;
             // 
             // settingsLabel
             // 
@@ -119,6 +128,7 @@ namespace Nontimer
             this.offMinuteTextBox.Name = "offMinuteTextBox";
             this.offMinuteTextBox.Size = new System.Drawing.Size(46, 20);
             this.offMinuteTextBox.TabIndex = 7;
+            this.offMinuteTextBox.TextChanged += offMinuteTextChanged;
             // 
             // radioButtonThrough
             // 
@@ -157,6 +167,7 @@ namespace Nontimer
             this.offlabelIn.Size = new System.Drawing.Size(76, 13);
             this.offlabelIn.TabIndex = 11;
             this.offlabelIn.Text = "Выключить в:";
+            
             // 
             // Sleep
             // 
@@ -185,38 +196,39 @@ namespace Nontimer
 
         }
 
-
-
-
-
         #endregion
-
-        private System.Windows.Forms.TextBox timeBox;
-        private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.Button okayButton;
 
 
         /*
          * Метод, который постоянно обновляет 
          * время в timeBox
-         * */       
+         * */
         private void timer1_tick(object sender, System.EventArgs e)
         {
             this.timeBox.Text = System.DateTime.Now.ToString();
             radioCheck();
-        }
+            
+        }       
 
+
+        /*
+         * проверка состяния radiobutton-ов
+         * */
         private void radioCheck()
         {
             if (!this.radioButtonThrough.Checked)
             {
-                offMinuteTextBox.Enabled = false;
-                offHourTextBox.Enabled = false;
+                this.offMinuteTextBox.Enabled = false;
+                this.offHourTextBox.Enabled = false;
+                
             }
             else
             {
-                offMinuteTextBox.Enabled = true;
-                offHourTextBox.Enabled = true;
+                this.offMinuteTextBox.Enabled = true;
+                this.offHourTextBox.Enabled = true;
+                this.offIn = false;
+                this.chbEn = true;
+                checkButton();
             }
             if (!this.radioButtonIn.Checked)
             {
@@ -224,9 +236,14 @@ namespace Nontimer
             }
             else
             {
-                this.offtextBoxIn.Enabled = true;                
+                this.offtextBoxIn.Enabled = true;
+                this.offIn = true;
+                this.chbEn = true;
+                this.okayButton.Enabled = true;
+                           
             }
 
+          
         }
 
 
@@ -243,11 +260,9 @@ namespace Nontimer
             {
                 offHourTextBox.Clear();
             }
-           
             this.okayButton.Enabled = true;
             this.shutHours = bufTime;
             checkButton();
-
         }
 
         /* минутное поле
@@ -267,16 +282,7 @@ namespace Nontimer
             checkButton();
         }
 
-        private System.Windows.Forms.Label currentLabel;
-        private System.Windows.Forms.Label offHourLabel;
-        private System.Windows.Forms.TextBox offHourTextBox;
-        private double shutHours;
-        private double shutMinutes;
-
-        Regex off_regex = new Regex("\\d{1,2}");
-        private System.Windows.Forms.Label settingsLabel;
-        private System.Windows.Forms.Label minuteLabel;
-        private System.Windows.Forms.TextBox offMinuteTextBox;
+        
 
         private void checkButton()
         {
@@ -286,14 +292,26 @@ namespace Nontimer
             }
         }
 
-        
-
-        
-        
+        private System.Windows.Forms.TextBox timeBox;
+        private System.Windows.Forms.Timer timer1; //timeBox
+        private System.Windows.Forms.Button okayButton;
+        private System.Windows.Forms.Label currentLabel;
+        private System.Windows.Forms.Label offHourLabel;
+        private System.Windows.Forms.TextBox offHourTextBox;
+        private double shutHours;
+        private double shutMinutes;
+        private Regex off_regex = new Regex("\\d{1,2}");
+        private System.Windows.Forms.Label settingsLabel;
+        private System.Windows.Forms.Label minuteLabel;
+        private System.Windows.Forms.TextBox offMinuteTextBox;
         private System.Windows.Forms.RadioButton radioButtonThrough;
         private System.Windows.Forms.RadioButton radioButtonIn;
         private System.Windows.Forms.TextBox offtextBoxIn;
         private System.Windows.Forms.Label offlabelIn;
+        private System.Windows.Forms.Timer timer3;
+        private bool offIn = false;
+        private bool chbEn = false;
+
     }
 
 }
