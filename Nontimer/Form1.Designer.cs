@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 
 namespace Nontimer
 {
@@ -35,8 +36,11 @@ namespace Nontimer
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.okayButton = new System.Windows.Forms.Button();
             this.currentLabel = new System.Windows.Forms.Label();
-            this.offLabel = new System.Windows.Forms.Label();
-            this.offTextBox = new System.Windows.Forms.TextBox();
+            this.offHourLabel = new System.Windows.Forms.Label();
+            this.offHourTextBox = new System.Windows.Forms.TextBox();
+            this.settingsLabel = new System.Windows.Forms.Label();
+            this.minuteLabel = new System.Windows.Forms.Label();
+            this.offMinuteTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // timeBox
@@ -53,6 +57,7 @@ namespace Nontimer
             // 
             // okayButton
             // 
+            this.okayButton.Enabled = false;
             this.okayButton.Location = new System.Drawing.Point(96, 133);
             this.okayButton.Name = "okayButton";
             this.okayButton.Size = new System.Drawing.Size(75, 23);
@@ -60,11 +65,7 @@ namespace Nontimer
             this.okayButton.Text = "OK";
             this.okayButton.UseVisualStyleBackColor = true;
             this.okayButton.Click += new System.EventHandler(this.button1_Click);
-            if (offTextBox.Text == string.Empty)
-            {
-                okayButton.Enabled = false;
-            }
-
+            this.okayButton.Enabled = false;
             // 
             // currentLabel
             // 
@@ -75,23 +76,49 @@ namespace Nontimer
             this.currentLabel.TabIndex = 2;
             this.currentLabel.Text = "Текущее время:";
             // 
-            // offLabel
+            // offHourLabel
             // 
-            this.offLabel.AutoSize = true;
-            this.offLabel.Location = new System.Drawing.Point(12, 65);
-            this.offLabel.Name = "offLabel";
-            this.offLabel.Size = new System.Drawing.Size(193, 13);
-            this.offLabel.TabIndex = 3;
-            this.offLabel.Text = "Через сколько часов выключить:";
+            this.offHourLabel.AutoSize = true;
+            this.offHourLabel.Location = new System.Drawing.Point(9, 91);
+            this.offHourLabel.Name = "offHourLabel";
+            this.offHourLabel.Size = new System.Drawing.Size(38, 13);
+            this.offHourLabel.TabIndex = 3;
+            this.offHourLabel.Text = "Часы:";
             // 
-            // offTextBox
+            // offHourTextBox
             // 
-            this.offTextBox.Location = new System.Drawing.Point(12, 81);
-            this.offTextBox.Name = "offTextBox";
-            this.offTextBox.Size = new System.Drawing.Size(193, 20);
-            this.offTextBox.TabIndex = 4;
-            this.offTextBox.TextChanged += offTextBox_TextChanged;
-
+            this.offHourTextBox.Location = new System.Drawing.Point(12, 107);
+            this.offHourTextBox.Name = "offHourTextBox";
+            this.offHourTextBox.Size = new System.Drawing.Size(42, 20);
+            this.offHourTextBox.TabIndex = 4;
+            this.offHourTextBox.TextChanged += offHourTextBox_TextChanged;
+            
+            // 
+            // settingsLabel
+            // 
+            this.settingsLabel.AutoSize = true;
+            this.settingsLabel.Location = new System.Drawing.Point(12, 54);
+            this.settingsLabel.Name = "settingsLabel";
+            this.settingsLabel.Size = new System.Drawing.Size(131, 13);
+            this.settingsLabel.TabIndex = 5;
+            this.settingsLabel.Text = "Настройки выключения:";
+            // 
+            // minuteLabel
+            // 
+            this.minuteLabel.AutoSize = true;
+            this.minuteLabel.Location = new System.Drawing.Point(74, 91);
+            this.minuteLabel.Name = "minuteLabel";
+            this.minuteLabel.Size = new System.Drawing.Size(49, 13);
+            this.minuteLabel.TabIndex = 6;
+            this.minuteLabel.Text = "Минуты:";
+            // 
+            // offMinuteTextBox
+            // 
+            this.offMinuteTextBox.Location = new System.Drawing.Point(77, 106);
+            this.offMinuteTextBox.Name = "offMinuteTextBox";
+            this.offMinuteTextBox.Size = new System.Drawing.Size(46, 20);
+            this.offMinuteTextBox.TabIndex = 7;
+            this.offMinuteTextBox.TextChanged += offMinuteTextChanged;
             // 
             // Sleep
             // 
@@ -99,8 +126,11 @@ namespace Nontimer
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(325, 159);
-            this.Controls.Add(this.offTextBox);
-            this.Controls.Add(this.offLabel);
+            this.Controls.Add(this.offMinuteTextBox);
+            this.Controls.Add(this.minuteLabel);
+            this.Controls.Add(this.settingsLabel);
+            this.Controls.Add(this.offHourTextBox);
+            this.Controls.Add(this.offHourLabel);
             this.Controls.Add(this.currentLabel);
             this.Controls.Add(this.okayButton);
             this.Controls.Add(this.timeBox);
@@ -113,7 +143,9 @@ namespace Nontimer
 
         }
 
-        
+
+
+
 
         #endregion
 
@@ -132,32 +164,61 @@ namespace Nontimer
         }
 
 
-        /* Проверка валидности введенных данных
+        /* часовое поле
+         * Проверка валидности введенных данных
          * выключение компьютера по данным
          * */
-        private void offTextBox_TextChanged(object sender, System.EventArgs e)
-        {
-
+        private void offHourTextBox_TextChanged(object sender, System.EventArgs e)
+        {       
             double time = 24.0;
             double bufTime = 0.0;
-            System.Double.TryParse(offTextBox.Text, out bufTime);
-            //TextBox tb = sender as TextBox;
-            if (!off_regex.IsMatch(offTextBox.Text) | (bufTime > time))
+            System.Double.TryParse(offHourTextBox.Text, out bufTime);
+            if (!off_regex.IsMatch(offHourTextBox.Text) | (bufTime > time))
             {
-                offTextBox.Clear();
+                offHourTextBox.Clear();
             }
            
             this.okayButton.Enabled = true;
-            this.shutTime = bufTime;
-        
+            this.shutHours = bufTime;
+            checkButton();
+
+        }
+
+        /* минутное поле
+         * */
+        private void offMinuteTextChanged(object sender, EventArgs e)
+        {
+            double time = 60.0;
+            double bufTime = 0.0;
+            System.Double.TryParse(offMinuteTextBox.Text, out bufTime);
+            if (!off_regex.IsMatch(offMinuteTextBox.Text) | (bufTime > time))
+            {
+                offMinuteTextBox.Clear();
+            }
+
+            this.okayButton.Enabled = true;
+            this.shutMinutes = bufTime;
+            checkButton();
         }
 
         private System.Windows.Forms.Label currentLabel;
-        private System.Windows.Forms.Label offLabel;
-        private System.Windows.Forms.TextBox offTextBox;
-        private double shutTime;
+        private System.Windows.Forms.Label offHourLabel;
+        private System.Windows.Forms.TextBox offHourTextBox;
+        private double shutHours;
+        private double shutMinutes;
 
         Regex off_regex = new Regex("\\d{1,2}");
+        private System.Windows.Forms.Label settingsLabel;
+        private System.Windows.Forms.Label minuteLabel;
+        private System.Windows.Forms.TextBox offMinuteTextBox;
+
+        private void checkButton()
+        {
+            if ((offHourTextBox.Text == string.Empty) && (offMinuteTextBox.Text == string.Empty))
+            {
+                okayButton.Enabled = false;
+            }
+        }
     }
 
 }
