@@ -32,6 +32,7 @@ namespace Nontimer
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Sleep));
             this.timeBox = new System.Windows.Forms.TextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.okayButton = new System.Windows.Forms.Button();
@@ -96,7 +97,6 @@ namespace Nontimer
             this.offHourTextBox.Name = "offHourTextBox";
             this.offHourTextBox.Size = new System.Drawing.Size(42, 20);
             this.offHourTextBox.TabIndex = 4;
-            this.offHourTextBox.TextChanged += offHourTextBox_TextChanged;
             // 
             // settingsLabel
             // 
@@ -122,7 +122,6 @@ namespace Nontimer
             this.offMinuteTextBox.Name = "offMinuteTextBox";
             this.offMinuteTextBox.Size = new System.Drawing.Size(46, 20);
             this.offMinuteTextBox.TabIndex = 7;
-            this.offMinuteTextBox.TextChanged += offMinuteTextChanged;
             // 
             // radioButtonThrough
             // 
@@ -169,14 +168,12 @@ namespace Nontimer
             // 
             // cancelButton
             // 
-            this.cancelButton.Enabled = false;
             this.cancelButton.Location = new System.Drawing.Point(217, 144);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 12;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
-            this.cancelButton.Enabled = true;
             this.cancelButton.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // Sleep
@@ -200,8 +197,9 @@ namespace Nontimer
             this.Controls.Add(this.timeBox);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Sleep";
-            this.Text = "sleep baka";
+            this.Text = "Выключение компьютера";
             this.ResumeLayout(false);
             this.PerformLayout();
 
