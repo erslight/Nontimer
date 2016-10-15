@@ -19,7 +19,9 @@ namespace Nontimer
 
         private void button1_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Okay");
+            MessageBox.Show("Okay, your computer will shutdown in " + this.shutTime + " hours");
         }
+
+       
     }
 }

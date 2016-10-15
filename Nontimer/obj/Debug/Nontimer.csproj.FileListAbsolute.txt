@@ -6,3 +6,4 @@ d:\Documents\C-diez\Projects\Nontimer\Nontimer\Nontimer\obj\Debug\Nontimer.Prope
 d:\Documents\C-diez\Projects\Nontimer\Nontimer\Nontimer\obj\Debug\Nontimer.csproj.GenerateResource.Cache
 d:\Documents\C-diez\Projects\Nontimer\Nontimer\Nontimer\obj\Debug\Nontimer.exe
 d:\Documents\C-diez\Projects\Nontimer\Nontimer\Nontimer\obj\Debug\Nontimer.pdb
+D:\Documents\C-diez\Projects\Nontimer\Nontimer\Nontimer\obj\Debug\Nontimer.csprojResolveAssemblyReference.cache
