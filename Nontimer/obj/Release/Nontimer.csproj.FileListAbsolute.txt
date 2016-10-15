@@ -1,0 +1,8 @@
+D:\Documents\C-diez\Projects\Nontimer\Nontimer\Nontimer\bin\Release\Nontimer.exe.config
+D:\Documents\C-diez\Projects\Nontimer\Nontimer\Nontimer\bin\Release\Nontimer.exe
+D:\Documents\C-diez\Projects\Nontimer\Nontimer\Nontimer\bin\Release\Nontimer.pdb
+D:\Documents\C-diez\Projects\Nontimer\Nontimer\Nontimer\obj\Release\Nontimer.Sleep.resources
+D:\Documents\C-diez\Projects\Nontimer\Nontimer\Nontimer\obj\Release\Nontimer.Properties.Resources.resources
+D:\Documents\C-diez\Projects\Nontimer\Nontimer\Nontimer\obj\Release\Nontimer.csproj.GenerateResource.Cache
+D:\Documents\C-diez\Projects\Nontimer\Nontimer\Nontimer\obj\Release\Nontimer.exe
+D:\Documents\C-diez\Projects\Nontimer\Nontimer\Nontimer\obj\Release\Nontimer.pdb
